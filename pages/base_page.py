@@ -256,9 +256,12 @@ class BasePage:
         description_locator_str: str,
     ):
         with pulse_step(f"Verifying card details for {expected_full_name}"):
-            # 1. Scope to Specific Card
-            card = self.page.locator(card_locator_str).filter(has_text=expected_full_name)
+            # 1. Scope to Specific Card using the unique empNumber in the profile picture src
+            card = self.page.locator(card_locator_str).filter(
+                has=self.page.locator(f"{profile_img_locator_str}[src*='empNumber/{emp_number}']")
+            )
             expect(card).to_be_visible()
+            expect(card).to_contain_text(expected_full_name)
 
             # 2. Profile Picture Verification
             profile_img = card.locator(profile_img_locator_str)
