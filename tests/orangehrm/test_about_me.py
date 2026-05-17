@@ -1,5 +1,5 @@
 import pytest
-from pages.about_me import AboutMePage
+from pages.about_me_page import AboutMePage
 
 
 @pytest.mark.usefixtures("login", "logout")

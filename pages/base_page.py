@@ -1,3 +1,4 @@
+from constants.components.dashboard import latest_posts_locators
 from playwright.sync_api import expect, Locator
 from pytest_pulse import pulse_step, step
 
@@ -193,3 +194,107 @@ class BasePage:
 
         with pulse_step("Verify attribute value contains"):
             self.expect_contains(actual_value, expected_value)
+
+    def wait_for_api_call(self, action, url: str, success_status: int = 200):
+        with pulse_step("Start waiting for the specific API call"):
+            with self.page.expect_response(url) as response_info:
+                # Perform the action that triggers the API
+                if callable(action):
+                    action()
+                else:
+                    action
+
+        # Extract the response object once it completes
+        response = response_info.value
+
+        # Perform assertions on the real response
+        assert response.status == success_status
+        res_json = response.json()
+        if "success" in res_json:
+            assert res_json["success"] is True
+        return res_json
+
+    def autocomplete_dropdown(self, locator, text):
+        autocomplete_input = self.page.locator(locator)
+        autocomplete_input.click()
+
+        # 3. Type the text sequentially.
+        # Using press_sequentially instead of fill() is crucial for autocompletes,
+        # as it simulates real keystrokes which triggers the frontend to fetch the hints.
+        autocomplete_input.press_sequentially(text, delay=100)
+
+        # 4. Wait for the loading spinner to disappear (if applicable)
+        # expect(page.locator(".oxd-autocomplete-spinner")).not_to_be_visible()
+
+        # 5. Locate the dropdown option that appears and click it.
+        # We use get_by_role here because modern frameworks use ARIA roles for dropdowns.
+        # If role="option" isn't used by the HTML, you can use a text locator.
+        target_option = self.page.locator(".oxd-autocomplete-dropdown").get_by_text(
+            text
+        )
+
+        # Ensure it's visible before clicking
+        expect(target_option).to_be_visible()
+        target_option.click()
+
+        # 6. Verification (Optional): Check that the input now contains the selected value
+        import re
+
+        expect(autocomplete_input).to_have_value(re.compile(text))
+
+    def verify_directory_card(
+        self,
+        expected_full_name: str,
+        emp_number: str | int,
+        live_job_title: str | None,
+        live_subunit: str | None,
+        live_location: str | None,
+        card_locator_str: str,
+        profile_img_locator_str: str,
+        job_title_locator_str: str,
+        card_body_locator_str: str,
+        description_locator_str: str,
+    ):
+        with pulse_step(f"Verifying card details for {expected_full_name}"):
+            # 1. Scope to Specific Card
+            card = self.page.locator(card_locator_str).filter(has_text=expected_full_name)
+            expect(card).to_be_visible()
+
+            # 2. Profile Picture Verification
+            profile_img = card.locator(profile_img_locator_str)
+            import re
+            expect(profile_img).to_have_attribute(
+                "src", re.compile(f"empNumber/{emp_number}")
+            )
+
+            # 3. Conditional Rendering: Job Title
+            job_title_locator = card.locator(job_title_locator_str)
+            if live_job_title:
+                expect(job_title_locator).to_be_visible()
+                expect(job_title_locator).to_have_text(live_job_title)
+            else:
+                expect(job_title_locator).to_be_hidden()
+
+            # 4. Conditional Rendering: Subunit and Location
+            card_body = card.locator(card_body_locator_str)
+
+            # If both are null, the entire body container is hidden in the DOM
+            if not live_subunit and not live_location:
+                expect(card_body).to_be_hidden()
+            else:
+                # The body container must be visible if at least one exists
+                expect(card_body).to_be_visible()
+
+                # Check Subunit
+                if live_subunit:
+                    subunit_desc = card_body.locator(
+                        description_locator_str, has_text=live_subunit
+                    )
+                    expect(subunit_desc).to_be_visible()
+
+                # Check Location
+                if live_location:
+                    location_desc = card_body.locator(
+                        description_locator_str, has_text=live_location
+                    )
+                    expect(location_desc).to_be_visible()
