@@ -29,8 +29,23 @@ jobs:
     - name: Install Playwright Browsers
       run: playwright install --with-deps chromium
       
+    - name: Create venv compatibility symlink
+      run: |
+        mkdir -p venv/bin
+        ln -s $(which pytest) venv/bin/pytest
+        
+    - name: Run Pytest Collection check
+      env:
+        USER_NAME: ${{ secrets.USER_NAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
+        DUMMYJSON_USERNAME: ${{ secrets.DUMMYJSON_USERNAME }}
+        DUMMYJSON_PASSWORD: ${{ secrets.DUMMYJSON_PASSWORD }}
+      run: venv/bin/pytest --collect-only
+      
     - name: Run Pytest
       env:
+        USER_NAME: ${{ secrets.USER_NAME }}
+        PASSWORD: ${{ secrets.PASSWORD }}
         DUMMYJSON_USERNAME: ${{ secrets.DUMMYJSON_USERNAME }}
         DUMMYJSON_PASSWORD: ${{ secrets.DUMMYJSON_PASSWORD }}
       run: pytest

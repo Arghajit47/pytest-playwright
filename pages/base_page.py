@@ -1,4 +1,3 @@
-from constants.components.dashboard import latest_posts_locators
 from playwright.sync_api import expect, Locator
 from pytest_pulse import pulse_step, step
 

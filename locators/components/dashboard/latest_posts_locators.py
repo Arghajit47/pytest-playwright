@@ -1,4 +1,4 @@
-from constants.components.dashboard.latest_posts_locators import LatestPostsConstants
+from constants.components.dashboard.latest_posts_constants import LatestPostsConstants
 
 
 class LatestPostsLocators:
