@@ -78,7 +78,7 @@ def login_via_api():
     with pulse_step("Fetch cookies from API"):
         # Dynamically fetch the authenticated cookie using our Requests utility
         api_auth = OrangeHRMAPI(APIEndpoints.BASE_URL)
-        cookie_value = api_auth.login(APIEndpoints.USER_NAME, APIEndpoints.PASSWORD)
+        cookie_value = api_auth.login(os.getenv("USER_NAME"), os.getenv("PASSWORD"))
         assert cookie_value is not None, "Failed to authenticate and get cookie"
     return cookie_value
 

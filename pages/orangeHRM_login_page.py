@@ -38,13 +38,13 @@ class LoginPage:
     @step("Fetch demo credentials")
     def fetch_demo_credentials(self):
         userName = (
-            self.page.locator(LoginPageLocators.USERNAME_DATA)
+            self.page.locator(LoginPageLocators.USERNAME_LOCATOR)
             .inner_text()
             .split(": ")[1]
             .strip()
         )
         password = (
-            self.page.locator(LoginPageLocators.PASSWORD_DATA)
+            self.page.locator(LoginPageLocators.PASSWORD_LOCATOR)
             .inner_text()
             .split(": ")[1]
             .strip()

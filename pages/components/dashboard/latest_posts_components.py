@@ -1,7 +1,7 @@
 from pytest_pulse import step, pulse_step
 from utils.ui_helpers import UIHelpers
 from constants.api_constants import APIEndpoints
-from constants.components.dashboard.latest_posts_locators import LatestPostsConstants
+from constants.components.dashboard.latest_posts_constants import LatestPostsConstants
 from locators.components.dashboard.latest_posts_locators import LatestPostsLocators
 from pages.base_page import BasePage
 
