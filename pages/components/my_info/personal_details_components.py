@@ -85,5 +85,13 @@ class PersonalDetailsComponent:
             with pulse_step("Validate Smoker Status"):
                 self.verify_smoker_status(data["smoker"])
             
-                
+    @step("Validate custom fields")
+    def validate_custom_fields(self):
+        with pulse_step("Reload the page and wait for custom fields api call"):            
+            response = self.base_page.wait_for_api_call(self.base_page.refresh_page, "**/custom-fields?screen=personal")
+            customFields = response["data"]
+        with pulse_step("Validate blood group"):    
+            self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields.get("custom1", ""))
+        with pulse_step("Validate test field"):    
+            self.base_page.verify_element_value(PersonalDetailsLocators.TEST_FIELD, customFields.get("custom2", ""))
             

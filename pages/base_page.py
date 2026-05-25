@@ -309,3 +309,7 @@ class BasePage:
     def verify_element_is_not_checked(self, locator, index=0):
         with pulse_step("Verifying element is not checked"):
             expect(self.page.locator(locator).nth(index)).to_be_unchecked()        
+
+    def refresh_page(self):
+        with pulse_step("Refreshing the page"):
+            self.page.reload()        
