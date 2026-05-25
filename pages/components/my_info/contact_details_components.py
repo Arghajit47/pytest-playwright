@@ -1,6 +1,5 @@
-from constants.my_info_constants import Api_Endpoints
+from constants.my_info_constants import Api_Endpoints, MyInfoConstants, ContactDetails
 from utils.ui_helpers import UIHelpers
-from constants.my_info_constants import MyInfoConstants
 from locators.components.my_info.personal_details_locators import PersonalDetailsLocators
 from pages.components.my_info.personal_details_components import PersonalDetailsComponent
 from pages.base_page import BasePage
@@ -31,26 +30,24 @@ class ContactDetailsComponent:
         with pulse_step("verify contact details"):
             contact_details = response["data"]
         with pulse_step("verify street 1"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.STREET_1.value), contact_details["street1"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.STREET_1.value), contact_details["street1"])
         with pulse_step("verify street 2"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.STREET_2.value), contact_details["street2"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.STREET_2.value), contact_details["street2"])
         with pulse_step("verify city"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.CITY.value), contact_details["city"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.CITY.value), contact_details["city"])
         with pulse_step("verify state"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.STATE.value), contact_details["province"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.STATE.value), contact_details["province"])
         with pulse_step("verify postal code"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.POSTAL_CODE.value), contact_details["zipCode"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.POSTAL_CODE.value), contact_details["zipCode"])
         with pulse_step("verify country"):
-            self.base_page.verify_element_text(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.COUNTRY.value), self.ui_helpers.get_country_name(contact_details["countryCode"]))
+            self.base_page.verify_element_text(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.COUNTRY.value), self.ui_helpers.get_country_name(contact_details["countryCode"]))
         with pulse_step("verify home"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.HOME.value), contact_details["homeTelephone"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.HOME.value), contact_details["homeTelephone"])
         with pulse_step("verify mobile"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.MOBILE.value), contact_details["mobile"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.MOBILE.value), contact_details["mobile"])
         with pulse_step("verify work"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.WORK.value), contact_details["workTelephone"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.WORK.value), contact_details["workTelephone"])
         with pulse_step("verify work email"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.WORK_EMAIL.value), contact_details["workEmail"])
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.WORK_EMAIL.value), contact_details["workEmail"])
         with pulse_step("verify other email"):
-            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(MyInfoConstants.ContactDetails.OTHER_EMAIL.value), contact_details["otherEmail"])
-            
-        
+            self.base_page.verify_element_value(ContactDetailsLocators.CONTACT_DETAILS_INPUT_FIELDS(ContactDetails.OTHER_EMAIL.value), contact_details["otherEmail"])

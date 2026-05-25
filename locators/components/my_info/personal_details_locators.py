@@ -24,7 +24,7 @@ class PersonalDetailsLocators:
     GENDER_MALE = f'(//label[normalize-space(text())="{PersonalDetails.GENDER.value}"]/following::input)[1]'
     GENDER_FEMALE = f'(//label[normalize-space(text())="{PersonalDetails.GENDER.value}"]/following::input)[2]'
     BLOOD_GROUP = "(//div[@class='oxd-select-text-input'])[3]"
-    TEST_FIELD = f'(//label[normalize-space(text())="{PersonalDetails.TEST_FIELD.value}"]/following::input)[1]'
+    TEST_FIELD = f'(//label[contains(text(), "{PersonalDetails.TEST_FIELD.value}")]/following::input)[1]'
     MILITARY_SERVICE = f'(//label[normalize-space(text())="{PersonalDetails.MILITARY_SERVICE.value}"]/following::input)[1]'
     SMOKER_STATUS = f'(//label[normalize-space(text())="{PersonalDetails.SMOKER.value}"]/following::input)[1]'
 
