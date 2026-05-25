@@ -35,10 +35,10 @@ class OrangeHRMAPI:
         login_response = self.session.post(validate_url, data=login_data)
         
         # If successful, OrangeHRM redirects (302) to the dashboard. 
-        # requests.Session automatically updates the 'orangehrm' cookie here.
-        if login_response.status_code == 200:
+        # We verify that we actually landed on the dashboard page, not redirected back to login.
+        if login_response.status_code == 200 and "dashboard" in login_response.url:
             print("Successfully authenticated!")
             return self.session.cookies.get_dict().get('orangehrm')
         else:
-            print(f"Login failed with status: {login_response.status_code}")
+            print(f"Login failed: redirected to {login_response.url}")
             return None

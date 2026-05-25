@@ -230,7 +230,7 @@ class BasePage:
         # If role="option" isn't used by the HTML, you can use a text locator.
         target_option = self.page.locator(".oxd-autocomplete-dropdown").get_by_text(
             text
-        )
+        ).first
 
         # Ensure it's visible before clicking
         expect(target_option).to_be_visible()
@@ -300,3 +300,12 @@ class BasePage:
                         description_locator_str, has_text=live_location
                     )
                     expect(location_desc).to_be_visible()
+
+
+    def verify_element_value(self, locator, expectedValue, index=0):
+        with pulse_step("Verifying element value"):
+            expect(self.page.locator(locator).nth(index)).to_have_value(expectedValue)
+
+    def verify_element_is_not_checked(self, locator, index=0):
+        with pulse_step("Verifying element is not checked"):
+            expect(self.page.locator(locator).nth(index)).to_be_unchecked()        

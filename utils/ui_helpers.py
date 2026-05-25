@@ -48,3 +48,13 @@ class UIHelpers:
 
         # Format the datetime object back into the new string format
         return date_obj.strftime("%d-%m-%Y")
+    
+    def convert_date_to_dropdown_format(self,date_str: str) -> str:
+        """
+        Converts a date string from yyyy-mm-dd to yyyy-dd-mm.
+        """
+        # Parse the string into a valid datetime object
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+
+        # Format the datetime object back into the new string format
+        return date_obj.strftime("%Y-%d-%m")

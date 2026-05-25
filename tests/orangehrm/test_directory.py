@@ -13,10 +13,13 @@ pytestmark = pytest.mark.usefixtures("login_via_cookies")
 def test_directory_page(page) -> None:
     with pulse_step("Instantiate Directory Page"):
         directory_page = DirectoryPage(page)
-    with pulse_step("Verify Directory page url and title"):
-        directory_page.navigate_to_directory_page()
+    with pulse_step("Verify Directory page url and title and get live directory data"):
+        live_employees = directory_page.get_live_directory_data()
+        assert len(live_employees) > 0, "No employees found in the directory!"
+        # Dynamically extract a search keyword (e.g. the first name of the first employee)
+        search_keyword = live_employees[0].get("firstName") or "Peter"
     with pulse_step("Verify Directory page Search by Name"):
-        directory_page.search_employee_by_name("manda")
+        directory_page.search_employee_by_name(search_keyword)
     with pulse_step("Verify Directory page Search by Job Title"):
         directory_page.select_dropdown_for_job_title("Account Assistant")
     with pulse_step("Verify Directory page Search by Location"):
