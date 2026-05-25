@@ -1,5 +1,6 @@
 from datetime import datetime
 from datetime import date
+from babel import Locale
 
 
 class UIHelpers:
@@ -58,3 +59,12 @@ class UIHelpers:
 
         # Format the datetime object back into the new string format
         return date_obj.strftime("%Y-%d-%m")
+
+    def get_country_name(self, country_code: str, locale_code: str = "en") -> str:
+        """
+        Get country name from country code.
+        """
+        locale = Locale(locale_code)
+        return locale.territories[country_code]
+
+  

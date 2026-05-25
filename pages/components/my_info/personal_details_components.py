@@ -1,3 +1,4 @@
+from constants.my_info_constants import Api_Endpoints
 from utils.ui_helpers import UIHelpers
 from constants.my_info_constants import MyInfoConstants
 from locators.components.my_info.personal_details_locators import PersonalDetailsLocators
@@ -26,7 +27,7 @@ class PersonalDetailsComponent:
 
     @step("Fetch employee details from API")
     def fetch_employee_details_from_api(self):
-        response = self.base_page.wait_for_api_call(self.click_on_my_info_tab, "**/personal-details")
+        response = self.base_page.wait_for_api_call(self.click_on_my_info_tab, Api_Endpoints.PERSONAL_DETAILS_ENDPOINT.value)
         return response
 
     @step("Verify Gender")
@@ -88,7 +89,7 @@ class PersonalDetailsComponent:
     @step("Validate custom fields")
     def validate_custom_fields(self):
         with pulse_step("Reload the page and wait for custom fields api call"):            
-            response = self.base_page.wait_for_api_call(self.base_page.refresh_page, "**/custom-fields?screen=personal")
+            response = self.base_page.wait_for_api_call(self.base_page.refresh_page, Api_Endpoints.PERSONAL_DETAILS_CUSTOM_FIELDS_ENDPOINT.value)
             customFields = response["data"]
         with pulse_step("Validate blood group"):    
             self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields.get("custom1", ""))

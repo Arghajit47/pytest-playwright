@@ -32,6 +32,23 @@ class PersonalDetails(Enum):
     ATTACHMENTS = "Attachments"
 
     
+class ContactDetails(Enum):
+    STREET_1 = "Street 1"
+    STREET_2 = "Street 2"
+    CITY = "City"
+    STATE = "State/Province"
+    POSTAL_CODE = "Zip/Postal Code"
+    COUNTRY = "Country"
+    HOME = "Home"
+    MOBILE = "Mobile"
+    WORK = "Work"
+    WORK_EMAIL = "Work Email"
+    OTHER_EMAIL = "Other Email"
     
-        
+class Api_Endpoints(Enum):
+    CONTACT_DETAILS_ENDPOINT = "**/contact-details"
+    PERSONAL_DETAILS_ENDPOINT = "**/personal-details"
+    PERSONAL_DETAILS_CUSTOM_FIELDS_ENDPOINT = "**/custom-fields?screen=personal"
+
+
     
