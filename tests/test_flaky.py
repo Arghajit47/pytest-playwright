@@ -53,5 +53,5 @@ def test_flaky_orangehrm_social_link(page: Page):
 
     with pulse_step("Assert that the URL contains linkedin"):
         # wait for the new page to actually load
-        new_page.wait_for_load_state("networkidle")
+        new_page.wait_for_load_state("domcontentloaded")
         assert "linkedin" in new_page.url.lower()

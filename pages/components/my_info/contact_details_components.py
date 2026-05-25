@@ -24,7 +24,7 @@ class ContactDetailsComponent:
     @step("fetch contact details from api")
     def fetch_contact_details_from_api(self):
         response = self.base_page.wait_for_api_call(self.click_on_contact_details_tab, Api_Endpoints.CONTACT_DETAILS_ENDPOINT.value)
-        return response.json()
+        return response
 
     @step("verify contact details")
     def verify_contact_details(self, response):

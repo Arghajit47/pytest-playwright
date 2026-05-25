@@ -13,4 +13,4 @@ from pytest_pulse import step
 def test_contact_details_ui_api_validation(page, request_setup, login_via_api):
     contact_details_component = ContactDetailsComponent(page)
     response_json = contact_details_component.fetch_contact_details_from_api()
-    contact_details_component.verify_contact_details()
+    contact_details_component.verify_contact_details(response_json)
