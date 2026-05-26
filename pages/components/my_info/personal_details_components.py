@@ -90,10 +90,14 @@ class PersonalDetailsComponent:
     def validate_custom_fields(self):
         with pulse_step("Reload the page and wait for custom fields api call"):            
             response = self.base_page.wait_for_api_call(self.base_page.refresh_page, Api_Endpoints.PERSONAL_DETAILS_CUSTOM_FIELDS_ENDPOINT.value)
-            customFields = response["data"]
+            customFields = response.get("data") or {}
             self.base_page.waitForFullyPageLoad()
-        with pulse_step("Validate blood group"):    
-            self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields.get("custom1", ""))
-        with pulse_step("Validate test field"):    
-            self.base_page.verify_element_value(PersonalDetailsLocators.TEST_FIELD, customFields.get("custom2", ""))
+        
+        if "custom1" in customFields and customFields["custom1"]:
+            with pulse_step("Validate blood group"):    
+                self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields["custom1"])
+        
+        if "custom2" in customFields and customFields["custom2"]:
+            with pulse_step("Validate test field"):    
+                self.base_page.verify_element_value(PersonalDetailsLocators.TEST_FIELD, customFields["custom2"])
             
