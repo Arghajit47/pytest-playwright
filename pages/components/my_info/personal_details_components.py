@@ -93,11 +93,11 @@ class PersonalDetailsComponent:
             customFields = response.get("data") or {}
             self.base_page.waitForFullyPageLoad()
         
-        if "custom1" in customFields and customFields["custom1"]:
-            with pulse_step("Validate blood group"):    
-                self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields["custom1"])
+            if "custom1" in customFields and customFields["custom1"]:
+                with pulse_step("Validate blood group"):    
+                    self.base_page.verify_element_text(PersonalDetailsLocators.BLOOD_GROUP, customFields["custom1"])
         
-        if "custom2" in customFields and customFields["custom2"]:
-            with pulse_step("Validate test field"):    
-                self.base_page.verify_element_value(PersonalDetailsLocators.TEST_FIELD, customFields["custom2"])
+            if "custom2" in customFields and customFields["custom2"]:
+                with pulse_step("Validate test field"):    
+                    self.base_page.verify_element_value(PersonalDetailsLocators.TEST_FIELD, customFields["custom2"])
             

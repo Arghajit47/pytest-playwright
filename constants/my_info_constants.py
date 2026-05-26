@@ -28,7 +28,7 @@ class PersonalDetails(Enum):
     SMOKER = "Smoker"
     CUSTOM_FIELDS = "Custom Fields"
     BLOOD_TYPE = "Blood Type"
-    TEST_FIELD = "Test Field"
+    TEST_FIELD = "Test_Field"
     ATTACHMENTS = "Attachments"
 
     
