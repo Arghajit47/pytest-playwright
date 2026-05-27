@@ -1,4 +1,5 @@
 from enum import Enum
+import time
 
 class MyInfoConstants:
     MY_INFO_TAB_OPTION = "My Info"
@@ -45,10 +46,29 @@ class ContactDetails(Enum):
     WORK_EMAIL = "Work Email"
     OTHER_EMAIL = "Other Email"
     
+class PersonalDetailsCustomFields(Enum):
+    BLOOD_GROUP = "Blood Group"
+    TEST_FIELD = "Test_Field"
+
+class EmergencyContacts(Enum):
+    NAME = "Name"
+    RELATIONSHIP = "Relationship"
+    HOME_TELEPHONE = "Home Telephone"
+    MOBILE = "Mobile"
+    WORK_TELEPHONE = "Work Telephone"
+
+class EmergencyContactsTestData:
+    CONTACT_NAME = f"Contact_{int(time.time())}"
+    RELATIONSHIP = "Brother"
+    HOME_TELEPHONE = "123-456-7890"
+    MOBILE = "987-654-3210"
+    WORK_TELEPHONE = "555-555-5555"
+    
 class Api_Endpoints(Enum):
     CONTACT_DETAILS_ENDPOINT = "**/contact-details"
     PERSONAL_DETAILS_ENDPOINT = "**/personal-details"
     PERSONAL_DETAILS_CUSTOM_FIELDS_ENDPOINT = "**/custom-fields?screen=personal"
+    EMERGENCY_CONTACTS_ENDPOINT = "**/emergency-contacts*"
 
 
     

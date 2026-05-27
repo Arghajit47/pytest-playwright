@@ -1,0 +1,10 @@
+class EmergencyContactsLocators:
+    ADD_CONTACT_BUTTON = "//button[contains(., 'Add')]"
+    INPUT_FIELDS = lambda fieldLabel : f"(//label[normalize-space(text())='{fieldLabel}']/following::input)[1]"
+    SAVE_BUTTON = "button[type='submit']"
+    CANCEL_BUTTON = "//button[contains(., 'Cancel')]"
+    TABLE_CARD = "div.oxd-table-card"
+    RECORD_ROW_BY_NAME = lambda name : f"(//div[@class='oxd-table-card' and contains(., '{name}')])[1]"
+    RECORD_CELL = lambda name, col_idx : f"(//div[@class='oxd-table-card' and contains(., '{name}')])[1]//div[contains(@class, 'oxd-table-cell')][{col_idx}]/div"
+    RECORD_DELETE_BUTTON = lambda name : f"(//div[@class='oxd-table-card' and contains(., '{name}')])[1]//button[contains(@class, 'oxd-table-cell-action')][1]"
+    RECORD_EDIT_BUTTON = lambda name : f"(//div[@class='oxd-table-card' and contains(., '{name}')])[1]//button[contains(@class, 'oxd-table-cell-action')][2]"
