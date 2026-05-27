@@ -58,11 +58,14 @@ class EmergencyContacts(Enum):
     WORK_TELEPHONE = "Work Telephone"
 
 class EmergencyContactsTestData:
-    CONTACT_NAME = f"Contact_{int(time.time())}"
     RELATIONSHIP = "Brother"
     HOME_TELEPHONE = "123-456-7890"
     MOBILE = "987-654-3210"
     WORK_TELEPHONE = "555-555-5555"
+
+    @classmethod
+    def get_dynamic_contact_name(cls) -> str:
+        return f"Contact_{int(time.time())}"
     
 class Api_Endpoints(Enum):
     CONTACT_DETAILS_ENDPOINT = "**/contact-details"

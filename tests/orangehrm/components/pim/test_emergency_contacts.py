@@ -26,9 +26,11 @@ def test_add_and_verify_emergency_contact(page, request_setup, login_via_api):
     # 1. Navigate and load baseline contacts
     response_json = emergency_contacts_component.fetch_emergency_contacts_from_api()
     
+    contact_name = EmergencyContactsTestData.get_dynamic_contact_name()
+
     # 2. Add contact via UI form
     emergency_contacts_component.add_emergency_contact(
-        name=EmergencyContactsTestData.CONTACT_NAME,
+        name=contact_name,
         relationship=EmergencyContactsTestData.RELATIONSHIP,
         home_phone=EmergencyContactsTestData.HOME_TELEPHONE,
         mobile=EmergencyContactsTestData.MOBILE,
@@ -40,4 +42,4 @@ def test_add_and_verify_emergency_contact(page, request_setup, login_via_api):
     emergency_contacts_component.verify_emergency_contacts_ui(new_response_json)
     
     # 4. Clean up: Delete the test contact via the UI and confirm deletion
-    emergency_contacts_component.delete_emergency_contact(EmergencyContactsTestData.CONTACT_NAME)
+    emergency_contacts_component.delete_emergency_contact(contact_name)

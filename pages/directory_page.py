@@ -100,7 +100,7 @@ class DirectoryPage:
         expected_full_name = " ".join(
             [n.strip() for n in [first, middle, last] if n and n.strip()]
         )
-        self.base_page.verify_directory_card(
+        self.verify_directory_card(
             expected_full_name=expected_full_name,
             emp_number=employee.get("empNumber"),
             live_job_title=employee.get("jobTitle", {}).get("title"),
@@ -112,6 +112,73 @@ class DirectoryPage:
             card_body_locator_str=DirectoryPageLocators.CARD_BODY,
             description_locator_str=DirectoryPageLocators.CARD_DESCRIPTION,
         )
+
+    def verify_directory_card(
+        self,
+        expected_full_name: str,
+        emp_number: str | int,
+        live_job_title: str | None,
+        live_subunit: str | None,
+        live_location: str | None,
+        card_locator_str: str,
+        profile_img_locator_str: str,
+        job_title_locator_str: str,
+        card_body_locator_str: str,
+        description_locator_str: str,
+    ):
+        with pulse_step(f"Verifying card details for {expected_full_name}"):
+            # 1. Scope to Specific Card using the unique empNumber in the profile picture src with boundary validation
+            cards = self.page.locator(card_locator_str).all()
+            card = None
+            for c in cards:
+                img = c.locator(profile_img_locator_str)
+                if img.count() > 0:
+                    src = img.get_attribute("src") or ""
+                    if re.search(rf"empNumber/{emp_number}(?!\d)", src):
+                        card = c
+                        break
+            
+            assert card is not None, f"Could not find directory card for employee number {emp_number}"
+            expect(card).to_be_visible()
+            expect(card).to_contain_text(expected_full_name)
+
+            # 2. Profile Picture Verification
+            profile_img = card.locator(profile_img_locator_str)
+            expect(profile_img).to_have_attribute(
+                "src", re.compile(rf"empNumber/{emp_number}(?!\d)")
+            )
+
+            # 3. Conditional Rendering: Job Title
+            job_title_locator = card.locator(job_title_locator_str)
+            if live_job_title:
+                expect(job_title_locator).to_be_visible()
+                expect(job_title_locator).to_have_text(live_job_title)
+            else:
+                expect(job_title_locator).to_be_hidden()
+
+            # 4. Conditional Rendering: Subunit and Location
+            card_body = card.locator(card_body_locator_str)
+
+            # If both are null, the entire body container is hidden in the DOM
+            if not live_subunit and not live_location:
+                expect(card_body).to_be_hidden()
+            else:
+                # The body container must be visible if at least one exists
+                expect(card_body).to_be_visible()
+
+                # Check Subunit
+                if live_subunit:
+                    subunit_desc = card_body.locator(
+                        description_locator_str, has_text=live_subunit
+                    )
+                    expect(subunit_desc).to_be_visible()
+
+                # Check Location
+                if live_location:
+                    location_desc = card_body.locator(
+                        description_locator_str, has_text=live_location
+                    )
+                    expect(location_desc).to_be_visible()
 
     def verify_employee_details_with_api_data(self, live_employees):
         self.base_page.verify_element_is_visible(
