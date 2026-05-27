@@ -64,7 +64,12 @@ class UIHelpers:
         """
         Get country name from country code.
         """
-        locale = Locale(locale_code)
-        return locale.territories[country_code]
+        if not country_code or country_code == '0' or country_code == 0:
+            return "-- Select --"
+        try:
+            locale = Locale(locale_code)
+            return locale.territories.get(country_code) or "-- Select --"
+        except Exception:
+            return "-- Select --"
 
   
