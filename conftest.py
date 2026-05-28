@@ -70,7 +70,7 @@ def login_via_cookies(page, login_via_api):
     with pulse_step("Navigate to the dashboard page"):
         base_page = BasePage(page)
         base_page.navigateToUrl(DashboardPageConstants.DASHBOARD_PAGE_URL)
-        base_page.waitForFullyPageLoad()
+        base_page.wait_for_fully_page_loaded()
 
 
 @pytest.fixture(scope="function")

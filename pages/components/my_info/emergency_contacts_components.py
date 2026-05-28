@@ -61,7 +61,7 @@ class EmergencyContactsComponent:
                 lambda: self.base_page.click(EmergencyContactsLocators.SAVE_BUTTON),
                 Api_Endpoints.EMERGENCY_CONTACTS_ENDPOINT.value
             )
-            self.base_page.waitForFullyPageLoad()
+            self.base_page.wait_for_fully_page_loaded()
 
     @step("delete emergency contact")
     def delete_emergency_contact(self, name):
@@ -74,4 +74,4 @@ class EmergencyContactsComponent:
                 lambda: self.base_page.click(confirm_btn),
                 Api_Endpoints.EMERGENCY_CONTACTS_ENDPOINT.value
             )
-            self.base_page.waitForFullyPageLoad()
+            self.base_page.wait_for_fully_page_loaded()

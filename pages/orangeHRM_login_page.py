@@ -25,7 +25,7 @@ class LoginPage:
         self.base_page.fill(self.username_inputbox, username)
         self.base_page.fill(self.password_inputbox, password)
         self.base_page.click(self.login_button)
-        self.base_page.waitForFullyPageLoad()
+        self.base_page.wait_for_fully_page_loaded()
 
     @step("Enter username")
     def enter_username(self, username: str):
@@ -71,5 +71,5 @@ class LoginPage:
     def click_logout_button(self):
         self.base_page.click(LoginPageLocators.USER_DROPDOWN)
         self.base_page.click(LoginPageLocators.LOGOUT_BUTTON)
-        self.base_page.waitForFullyPageLoad()
+        self.base_page.wait_for_fully_page_loaded()
         self.base_page.verify_element_is_visible(self.login_button)

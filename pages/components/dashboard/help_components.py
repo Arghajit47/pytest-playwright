@@ -12,7 +12,7 @@ class HelpComponents(BasePage):
 
     @step("Click on the help button")
     def click_help_button(self):
-        self.base_page.waitForFullyPageLoad()
+        self.base_page.wait_for_fully_page_loaded()
         with self.page.context.expect_page() as new_page_info:
             self.base_page.click(HelpLocators.HELP_BUTTON)
         self.new_page = new_page_info.value
@@ -20,7 +20,7 @@ class HelpComponents(BasePage):
         
     @step("Verify help icon is visible")
     def verify_help_icon_is_visible(self):
-        self.base_page.waitForFullyPageLoad()
+        self.base_page.wait_for_fully_page_loaded()
         self.base_page.verify_element_is_visible(HelpLocators.HELP_ICON)
     
     @step("Verify help url")

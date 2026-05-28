@@ -3,7 +3,7 @@ import pytest
 from playwright.sync_api import expect  # expect is used for assertions
 
 
-def waitForFullyPageLoad(page):
+def wait_for_fully_page_loaded(page):
     page.wait_for_load_state("domcontentloaded")
     page.wait_for_load_state("networkidle")
     page.wait_for_load_state("load")
@@ -18,10 +18,10 @@ def test_pulse_report_search(page):
     page.goto(
         "https://arghajit47.github.io/playwright-pulse/"
     )  # This loads pulse report documentation
-    waitForFullyPageLoad(page)
+    wait_for_fully_page_loaded(page)
     page.locator('[id="searchInput"]').type("Arghajit Singha")
     page.locator('[id="searchInput"]').press("Enter")
-    waitForFullyPageLoad(page)
+    wait_for_fully_page_loaded(page)
     try:
         page.get_by_role("button", name="Accept All").click(timeout=1000)
     except:

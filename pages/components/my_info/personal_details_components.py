@@ -13,7 +13,7 @@ class PersonalDetailsComponent:
     @step("Click on My Info Tab option")
     def click_on_my_info_tab(self):
         with pulse_step("Click on My Info Tab option"):
-            self.base_page.waitForFullyPageLoad()
+            self.base_page.wait_for_fully_page_loaded()
             self.base_page.click(PersonalDetailsLocators.MY_INFO_OPTION)    
 
     @step("Verify employee details is visible")
@@ -91,7 +91,7 @@ class PersonalDetailsComponent:
         with pulse_step("Reload the page and wait for custom fields api call"):            
             response = self.base_page.wait_for_api_call(self.base_page.refresh_page, Api_Endpoints.PERSONAL_DETAILS_CUSTOM_FIELDS_ENDPOINT.value)
             customFields = response.get("data") or {}
-            self.base_page.waitForFullyPageLoad()
+            self.base_page.wait_for_fully_page_loaded()
         
             if "custom1" in customFields and customFields["custom1"]:
                 with pulse_step("Validate blood group"):    

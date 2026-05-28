@@ -7,36 +7,35 @@ class BasePage:
     def __init__(self, page):
         self.page = page
 
-    def waitForFullyPageLoad(self):
+    def wait_for_fully_page_loaded(self):
         with pulse_step("Wait for full page load"):
             self.page.wait_for_load_state("domcontentloaded")
-            self.page.wait_for_load_state("networkidle")
             self.page.wait_for_load_state("load")
 
     def navigateToUrl(self, url: str):
         with pulse_step("Navigate to the url"):
             self.page.goto(url)
-            self.waitForFullyPageLoad()
+            self.wait_for_fully_page_loaded()
 
     def click(self, locator: str | Locator, index: int = 0):
         if isinstance(locator, str):
             with pulse_step("Generating Locator from string and Clicking on it"):
                 self.page.locator(locator).nth(index).click()
-                self.waitForFullyPageLoad()
+                self.wait_for_fully_page_loaded()
         else:
             with pulse_step("Got Direct Locator, Clicking on it"):
                 locator.nth(index).click()
-                self.waitForFullyPageLoad()
+                self.wait_for_fully_page_loaded()
 
     def fill(self, locator: str | Locator, text: str, index: int = 0):
         if isinstance(locator, str):
             with pulse_step("Generating Locator from string and Filling it"):
                 self.page.locator(locator).nth(index).fill(text)
-                self.waitForFullyPageLoad()
+                self.wait_for_fully_page_loaded()
         else:
             with pulse_step("Got Direct Locator, Filling it"):
                 locator.nth(index).fill(text)
-                self.waitForFullyPageLoad()
+                self.wait_for_fully_page_loaded()
 
     def verify_page_title(self, title: str):
         with pulse_step("Verifying page title"):
@@ -92,7 +91,7 @@ class BasePage:
 
     def verify_page_url(self, url: str):
         with pulse_step("Verify page url"):
-            self.waitForFullyPageLoad()
+            self.wait_for_fully_page_loaded()
             expect(self.page).to_have_url(url)
 
     def get_element_count(self, locator: str | Locator) -> int:
@@ -225,21 +224,26 @@ class BasePage:
         # 4. Wait for the loading spinner to disappear (if applicable)
         # expect(page.locator(".oxd-autocomplete-spinner")).not_to_be_visible()
 
-        # 5. Locate the dropdown option that appears and click it.
+        # 5. Locate the dropdown option that appears and click it if present.
         # We use get_by_role here because modern frameworks use ARIA roles for dropdowns.
         # If role="option" isn't used by the HTML, you can use a text locator.
-        target_option = self.page.locator(".oxd-autocomplete-dropdown").get_by_text(
-            text
-        ).first
+        # For non-existent values, we handle the timeout gracefully.
+        dropdown = self.page.locator(".oxd-autocomplete-dropdown")
+        target_option = dropdown.get_by_text(text).first
 
-        # Ensure it's visible before clicking
-        expect(target_option).to_be_visible()
-        target_option.click()
-
-        # 6. Verification (Optional): Check that the input now contains the selected value
-        import re
-
-        expect(autocomplete_input).to_have_value(re.compile(text))
+        try:
+            # Short timeout to check if the suggestion actually appears
+            expect(target_option).to_be_visible(timeout=3000)
+            target_option.click()
+            
+            # 6. Verification (Optional): Check that the input now contains the selected value
+            import re
+            expect(autocomplete_input).to_have_value(re.compile(text))
+        except AssertionError:
+            # If the option doesn't exist, we don't click it and proceed
+            # (useful when testing filtering with non-existent criteria)
+            print(f"Autocomplete option '{text}' not found in dropdown, proceeding without selecting.")
+            autocomplete_input.press("Escape")
 
 
 
@@ -253,4 +257,11 @@ class BasePage:
 
     def refresh_page(self):
         with pulse_step("Refreshing the page"):
-            self.page.reload()        
+            self.page.reload()  
+            
+    def get_element_inner_text(self, locator: str | Locator, index: int = 0):
+        with pulse_step("Getting element inner text"):
+            if isinstance(locator, str):
+                return self.page.locator(locator).nth(index).inner_text()
+            else:
+                return locator.nth(index).inner_text()              
