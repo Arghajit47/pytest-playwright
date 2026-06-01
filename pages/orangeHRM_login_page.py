@@ -2,6 +2,7 @@ from constants.dashboard_page_constants import DashboardPageConstants
 from constants.login_page_constants import LoginPageConstants
 from pages.base_page import BasePage
 from locators.orangeHRM_login_locators import LoginPageLocators
+from locators.orangeHRM_login_locators import LoginPageLocators as UserLocators
 from playwright.sync_api import Page
 import os
 from pytest_pulse import step
@@ -69,7 +70,9 @@ class LoginPage:
 
     @step("Click logout button")
     def click_logout_button(self):
+        # First click the user dropdown to open it
         self.base_page.click(LoginPageLocators.USER_DROPDOWN)
-        self.base_page.click(LoginPageLocators.LOGOUT_BUTTON)
+        # Then click the logout link within the dropdown
+        self.base_page.click(UserLocators.LOGOUT_BUTTON)
         self.base_page.wait_for_fully_page_loaded()
         self.base_page.verify_element_is_visible(self.login_button)
