@@ -14,3 +14,9 @@ class Cookies(Enum):
     ORANGEHRM_COOKIE_HTTPONLY = True
     ORANGEHRM_COOKIE_SECURE = True
     ORANGEHRM_COOKIE_SAMESITE = "Lax"
+
+
+class Keys(Enum):
+    ARROW_DOWN = "ArrowDown"
+    ENTER = "Enter"
+

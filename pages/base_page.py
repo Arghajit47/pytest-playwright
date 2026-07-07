@@ -1,11 +1,15 @@
 from playwright.sync_api import expect, Locator
 from pytest_pulse import pulse_step, step
-
+import time
 
 class BasePage:
 
     def __init__(self, page):
         self.page = page
+
+    def strict_wait(self):
+        with pulse_step("Strict wait"):
+            time.sleep(5) 
 
     def wait_for_fully_page_loaded(self):
         with pulse_step("Wait for full page load"):
@@ -44,7 +48,8 @@ class BasePage:
     def verify_element_is_visible(self, locator: str | Locator):
         if isinstance(locator, str):
             with pulse_step("Generating Locator from string and verifying it"):
-                expect(self.page.locator(locator)).to_be_visible()
+                self.page.wait_for_selector(locator, state='visible', timeout=15000)
+                expect(self.page.locator(locator)).to_be_visible(timeout=15000)
         else:
             with pulse_step("Got Direct Locator, Verifying it"):
                 expect(locator).to_be_visible()
@@ -89,10 +94,23 @@ class BasePage:
             with pulse_step("Got Direct Locator, Verifying it"):
                 expect(locator.nth(index)).to_have_text(text)
 
-    def verify_page_url(self, url: str):
+    def verify_page_url(self, url):
         with pulse_step("Verify page url"):
             self.wait_for_fully_page_loaded()
             expect(self.page).to_have_url(url)
+
+    def wait_for_timeout(self, timeout_ms: int):
+        with pulse_step(f"Wait for timeout: {timeout_ms}ms"):
+            self.page.wait_for_timeout(timeout_ms)
+
+    def press_key(self, locator: str | Locator, key: str, index: int = 0):
+        with pulse_step(f"Press key '{key}' on locator"):
+            if isinstance(locator, str):
+                self.page.locator(locator).nth(index).press(key)
+            else:
+                locator.nth(index).press(key)
+            self.wait_for_fully_page_loaded()
+
 
     def get_element_count(self, locator: str | Locator) -> int:
         if isinstance(locator, str):

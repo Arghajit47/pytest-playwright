@@ -115,6 +115,12 @@ def authentication_token(request_setup, base_api_setup):
     return response["accessToken"]
 
 
+@pytest.fixture(scope="function")
+def api_client(base_api_setup):
+    return base_api_setup
+
+
+
 def pytest_sessionstart(session):
     """
     Called after the Session object has been created and
