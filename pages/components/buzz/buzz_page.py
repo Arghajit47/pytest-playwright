@@ -146,9 +146,14 @@ class BuzzPage(BasePage):
 
     @step("Get live Buzz feed via API")
     def get_live_buzz_feed(self) -> dict:
-        """Navigates to Buzz page and intercepts the initial feed response."""
+        """Navigates to Buzz page and intercepts the initial feed response.
+
+        Uses page.goto() directly (without wait_for_fully_page_loaded) inside
+        the expect_response block to avoid the response body being garbage-collected
+        before response.json() is called.
+        """
         response = self.base_page.wait_for_api_call(
-            lambda: self.navigate_to_page(),
+            lambda: self.page.goto(BuzzConstants.BUZZ_URL),
             BuzzConstants.BUZZ_FEED_API_ENDPOINT,
         )
         self.base_page.wait_for_fully_page_loaded()

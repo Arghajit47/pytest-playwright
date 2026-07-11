@@ -50,15 +50,47 @@ class UIHelpers:
         # Format the datetime object back into the new string format
         return date_obj.strftime("%d-%m-%Y")
     
-    def convert_date_to_dropdown_format(self,date_str: str) -> str:
+    def convert_date_to_dropdown_format(self, date_str: str) -> str:
         """
-        Converts a date string from yyyy-mm-dd to yyyy-dd-mm.
+        Converts a date string from yyyy-mm-dd to dd-mm-yyyy.
         """
         # Parse the string into a valid datetime object
         date_obj = datetime.strptime(date_str, "%Y-%m-%d")
 
         # Format the datetime object back into the new string format
-        return date_obj.strftime("%Y-%d-%m")
+        return date_obj.strftime("%d-%m-%Y")
+
+    def format_date_to_placeholder(self, date_str: str, placeholder: str) -> str:
+        """
+        Converts a date string from yyyy-mm-dd to whatever format the
+        UI input placeholder specifies (e.g. 'dd-mm-yyyy', 'yyyy-dd-mm').
+
+        Falls back to dd-mm-yyyy if the placeholder cannot be parsed.
+        """
+        date_obj = datetime.strptime(date_str, "%Y-%m-%d")
+
+        # Map placeholder tokens to strftime tokens
+        token_map = {
+            "dd": "%d",
+            "mm": "%m",
+            "yyyy": "%Y",
+            "yy": "%y",
+        }
+
+        # Normalise placeholder: lowercase, strip spaces
+        ph = placeholder.strip().lower()
+
+        # Replace tokens from longest to shortest to avoid partial matches
+        # (e.g. 'yyyy' before 'yy', 'dd' before 'd')
+        strftime_format = ph
+        for token in sorted(token_map.keys(), key=len, reverse=True):
+            strftime_format = strftime_format.replace(token, token_map[token])
+
+        # If nothing was replaced (unknown format), fall back to dd-mm-yyyy
+        if strftime_format == ph:
+            return date_obj.strftime("%d-%m-%Y")
+
+        return date_obj.strftime(strftime_format)
 
     def get_country_name(self, country_code: str, locale_code: str = "en") -> str:
         """

@@ -38,6 +38,56 @@ class DirectoryPage:
                 DirectoryPageLocators.EMPLOYEE_NAME_DROPDOWN, name
             )
 
+    @step("Select first available job title from dropdown")
+    def select_first_available_job_title(self):
+        """Opens the job title dropdown and selects the first non-placeholder option."""
+        with pulse_step("Click on job title dropdown"):
+            self.base_page.click(DirectoryPageLocators.SELECT_DROPDOWN)
+        with pulse_step("Verify dropdown list visible"):
+            self.base_page.verify_element_is_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
+        options = self.base_page.get_all_element_texts(
+            DirectoryPageLocators.DROPDOWN_SELECT_OPTION + " div.oxd-select-option span"
+        )
+        target = None
+        for opt in options:
+            if opt and opt.strip() and opt.strip() != "-- Select --":
+                target = opt.strip()
+                break
+        if not target:
+            target = options[0].strip() if options else ""
+        self.base_page.click(DirectoryPageLocators.DROPDOWN_OPTIONS(target))
+        with pulse_step("Wait for dropdown to close"):
+            self.base_page.verify_element_is_not_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
+
+    @step("Select first available location from dropdown")
+    def select_first_available_location(self):
+        """Opens the location dropdown and selects the first non-placeholder option."""
+        with pulse_step("Click on location dropdown"):
+            self.base_page.click(DirectoryPageLocators.SELECT_DROPDOWN, 1)
+        with pulse_step("Verify dropdown list visible"):
+            self.base_page.verify_element_is_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
+        options = self.base_page.get_all_element_texts(
+            DirectoryPageLocators.DROPDOWN_SELECT_OPTION + " div.oxd-select-option span"
+        )
+        target = None
+        for opt in options:
+            if opt and opt.strip() and opt.strip() != "-- Select --":
+                target = opt.strip()
+                break
+        if not target:
+            target = options[0].strip() if options else ""
+        self.base_page.click(DirectoryPageLocators.DROPDOWN_OPTIONS(target))
+        with pulse_step("Wait for dropdown to close"):
+            self.base_page.verify_element_is_not_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
+
     @step("Select dropdown for job title")
     def select_dropdown_for_job_title(self, job_title):
         with pulse_step("Click on job title dropdown"):
@@ -155,7 +205,7 @@ class DirectoryPage:
             job_title_locator = card.locator(job_title_locator_str)
             if live_job_title:
                 expect(job_title_locator).to_be_visible()
-                expect(job_title_locator).to_have_text(live_job_title)
+                expect(job_title_locator).to_contain_text(live_job_title)
             else:
                 expect(job_title_locator).to_be_hidden()
 

@@ -60,7 +60,11 @@ class PersonalDetailsComponent:
             self.base_page.verify_element_value(PersonalDetailsLocators.DRIVER_LICENSE_NUMBER, data.get("drivingLicenseNo", ""))
         with pulse_step("Validate License Expiry Date"):
             expiry = data.get("drivingLicenseExpiredDate")
-            formatted_expiry = self.ui_helper.convert_date_to_dropdown_format(expiry) if expiry else ""
+            if expiry:
+                placeholder = self.page.locator(PersonalDetailsLocators.LICENSE_EXPIRY_DATE).first.get_attribute("placeholder") or ""
+                formatted_expiry = self.ui_helper.format_date_to_placeholder(expiry, placeholder)
+            else:
+                formatted_expiry = ""
             self.base_page.verify_element_value(PersonalDetailsLocators.LICENSE_EXPIRY_DATE, formatted_expiry)
         with pulse_step("Validate Nationality"):
             nationality_dict = data.get("nationality")
@@ -70,7 +74,11 @@ class PersonalDetailsComponent:
             self.base_page.verify_element_text(PersonalDetailsLocators.MARITAL_STATUS, data.get("maritalStatus", ""))
         with pulse_step("Validate Date of Birth"):
             dob = data.get("birthday")
-            formatted_dob = self.ui_helper.convert_date_to_dropdown_format(dob) if dob else ""
+            if dob:
+                dob_placeholder = self.page.locator(PersonalDetailsLocators.DATE_OF_BIRTH).first.get_attribute("placeholder") or ""
+                formatted_dob = self.ui_helper.format_date_to_placeholder(dob, dob_placeholder)
+            else:
+                formatted_dob = ""
             self.base_page.verify_element_value(PersonalDetailsLocators.DATE_OF_BIRTH, formatted_dob)
         with pulse_step("Validate Gender"):
             self.verify_gender(data.get("gender"))

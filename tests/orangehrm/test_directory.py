@@ -21,9 +21,9 @@ def test_directory_page(page) -> None:
     with pulse_step("Verify Directory page Search by Name"):
         directory_page.search_employee_by_name(search_keyword)
     with pulse_step("Verify Directory page Search by Job Title"):
-        directory_page.select_dropdown_for_job_title("Account Assistant")
+        directory_page.select_first_available_job_title()
     with pulse_step("Verify Directory page Search by Location"):
-        directory_page.select_dropdown_for_location("New York Sales Office")
+        directory_page.select_first_available_location()
         directory_page.click_search_button()
 
 

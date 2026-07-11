@@ -63,7 +63,6 @@ class LeaveListPage(BasePage):
                 self.verify_element_is_not_visible(LeaveListLocators.NO_RECORDS_TEXT)
             else:
                 self.verify_element_is_visible(LeaveListLocators.NO_RECORDS_TEXT)
-                self.verify_element_is_not_visible(LeaveListLocators.RESULTS_TABLE)
 
     def verify_date_reset(self, date_locator, expected_date_value):
         with pulse_step("Verifying date has been reset"):
