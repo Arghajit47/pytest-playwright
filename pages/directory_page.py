@@ -37,7 +37,6 @@ class DirectoryPage:
             self.base_page.autocomplete_dropdown(
                 DirectoryPageLocators.EMPLOYEE_NAME_DROPDOWN, name
             )
-            self.page.wait_for_timeout(1000)
 
     @step("Select dropdown for job title")
     def select_dropdown_for_job_title(self, job_title):
@@ -51,7 +50,9 @@ class DirectoryPage:
             )
             self.base_page.click(DirectoryPageLocators.DROPDOWN_OPTIONS(job_title))
         with pulse_step("Wait for dropdown to close"):
-            self.page.wait_for_timeout(1000)
+            self.base_page.verify_element_is_not_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
 
     @step("Select dropdown for location")
     def select_dropdown_for_location(self, location_name):
@@ -65,7 +66,9 @@ class DirectoryPage:
             )
             self.base_page.click(DirectoryPageLocators.DROPDOWN_OPTIONS(location_name))
         with pulse_step("Wait for dropdown to close"):
-            self.page.wait_for_timeout(1000)
+            self.base_page.verify_element_is_not_visible(
+                DirectoryPageLocators.DROPDOWN_SELECT_OPTION
+            )
 
     @step("Reset search form")
     def reset_search_form(self):

@@ -1,7 +1,6 @@
 from constants.components.claim.claim_constants import ClaimConstants, ClaimEvent, ClaimCurrency, Api_Endpoints
 from locators.components.claim.claim_locators import ClaimLocators
 from pages.base_page import BasePage
-from constants.common_constants import Keys
 from pytest_pulse import step, pulse_step
 import re
 
@@ -41,10 +40,7 @@ class AssignClaimPage:
         self, employee_name, event: ClaimEvent, currency: ClaimCurrency, remarks=None
     ):
         with pulse_step(f"Assigning claim for {employee_name}"):
-            self.base_page.fill(ClaimLocators.EMPLOYEE_NAME_INPUT, employee_name)
-            self.base_page.wait_for_timeout(2000)  # Wait for hints to appear
-            self.base_page.press_key(ClaimLocators.EMPLOYEE_NAME_INPUT, Keys.ARROW_DOWN.value)
-            self.base_page.press_key(ClaimLocators.EMPLOYEE_NAME_INPUT, Keys.ENTER.value)
+            self.base_page.autocomplete_dropdown(ClaimLocators.EMPLOYEE_NAME_INPUT, employee_name)
 
             self.base_page.click(ClaimLocators.EVENT_INPUT)
             self.base_page.click(ClaimLocators.DROPDOWN_OPTION(event.value))
