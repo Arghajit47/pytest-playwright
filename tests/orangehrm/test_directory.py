@@ -16,8 +16,7 @@ def test_directory_page(page) -> None:
     with pulse_step("Verify Directory page url and title and get live directory data"):
         live_employees = directory_page.get_live_directory_data()
         assert len(live_employees) > 0, "No employees found in the directory!"
-        # Dynamically extract a search keyword (e.g. the first name of the first employee)
-        search_keyword = live_employees[0].get("firstName") or "Peter"
+        search_keyword = directory_page.get_search_keyword(live_employees)
     with pulse_step("Verify Directory page Search by Name"):
         directory_page.search_employee_by_name(search_keyword)
     with pulse_step("Verify Directory page Search by Job Title"):

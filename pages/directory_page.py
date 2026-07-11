@@ -31,6 +31,13 @@ class DirectoryPage:
                 DirectoryConstants.DIRECTORY_OPTION_TEXT,
             )
 
+    @step("Get search keyword from live directory data")
+    def get_search_keyword(self, live_employees) -> str:
+        """Extracts a search keyword (first name of the first employee) from live API data."""
+        if live_employees:
+            return live_employees[0].get("firstName") or "Peter"
+        return "Peter"
+
     @step("Search employee by name")
     def search_employee_by_name(self, name):
         with pulse_step("Autocomplete dropdown"):
